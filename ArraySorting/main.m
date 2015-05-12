@@ -35,9 +35,24 @@ int main(int argc, const char * argv[]) {
             
         };
         
-        NSArray *newArray = [array sortedArrayUsingComparator:alpha];
+        NSComparisonResult (^length)(NSString *, NSString *) = ^(id obj1, id obj2) {
+            if ([obj1 length] > [obj2 length]) {
+                return (NSComparisonResult)NSOrderedAscending;
+            }
+            
+            if ([obj1 length] < [obj2 length]) {
+                return (NSComparisonResult)NSOrderedDescending;
+            }
+            
+            return (NSComparisonResult)NSOrderedSame;
+        };
         
-        NSLog(@"%@", newArray);
+        NSArray *alphaArray = [array sortedArrayUsingComparator:alpha];
+        NSArray *lengthArray = [array sortedArrayUsingComparator:length];
+        
+        NSLog(@"%@", alphaArray);
+        NSLog(@"%@", lengthArray);
+
         
         /*
          if ([obj1 lowercaseString] > [obj2 lowercaseString]) {
