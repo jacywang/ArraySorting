@@ -82,16 +82,19 @@ int main(int argc, const char * argv[]) {
             return (NSComparisonResult)NSOrderedSame;
         };
         
+        
         NSArray *alphaArray = [array sortedArrayUsingComparator:alpha];
         NSArray *lengthArray = [array sortedArrayUsingComparator:length];
         NSArray *lastCharaterArray = [array sortedArrayUsingComparator:lastCharacter];
         NSArray *countCharacterArray = [array sortedArrayUsingComparator:countOfCharacterE];
+        NSArray *filteredArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"e"]];
         
         NSLog(@"%@", alphaArray);
         NSLog(@"%@", lengthArray);
         NSLog(@"%@", lastCharaterArray);
         NSLog(@"%@", countCharacterArray);
-
+        NSLog(@"%@", filteredArray);
+        
     }
     return 0;
 }
