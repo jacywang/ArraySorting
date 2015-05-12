@@ -28,7 +28,6 @@ int main(int argc, const char * argv[]) {
         
         ;
         
-        
         NSComparisonResult (^alpha)(NSString *, NSString *) = ^(id obj1, id obj2) {
             
             return [obj1 caseInsensitiveCompare:obj2];
@@ -47,24 +46,52 @@ int main(int argc, const char * argv[]) {
             return (NSComparisonResult)NSOrderedSame;
         };
         
+        NSComparisonResult (^lastCharacter)(NSString *, NSString *) = ^(id obj1, id obj2) {
+            
+            return [[obj1 substringFromIndex:[obj1 length]-1] caseInsensitiveCompare:[obj2 substringFromIndex:[obj2 length]-1]];
+            
+        };
+        
+        int (^countOfe)(NSString *) = ^(id obj){
+            int total = 0;
+            
+            for (int i = 0; i < [obj length]; i++) {
+                NSRange range;
+                range.location = i;
+                range.length = 1;
+                
+                if ([[[obj substringWithRange:range] lowercaseString] isEqualTo:@"e"]) {
+                    total += 1;
+                }
+            }
+            
+            return total;
+        };
+        
+        NSLog(@"%d", countOfe(@"eeeee"));
+        
+        NSComparisonResult (^countOfCharacterE)(NSString *, NSString *) = ^(id obj1, id obj2) {
+            if (countOfe(obj1) > countOfe(obj2)) {
+                return (NSComparisonResult)NSOrderedAscending;
+            }
+            
+            if (countOfe(obj1) < countOfe(obj2)) {
+                return (NSComparisonResult)NSOrderedDescending;
+            }
+            
+            return (NSComparisonResult)NSOrderedSame;
+        };
+        
         NSArray *alphaArray = [array sortedArrayUsingComparator:alpha];
         NSArray *lengthArray = [array sortedArrayUsingComparator:length];
+        NSArray *lastCharaterArray = [array sortedArrayUsingComparator:lastCharacter];
+        NSArray *countCharacterArray = [array sortedArrayUsingComparator:countOfCharacterE];
         
         NSLog(@"%@", alphaArray);
         NSLog(@"%@", lengthArray);
+        NSLog(@"%@", lastCharaterArray);
+        NSLog(@"%@", countCharacterArray);
 
-        
-        /*
-         if ([obj1 lowercaseString] > [obj2 lowercaseString]) {
-         return (NSComparisonResult)NSOrderedDescending;
-         }
-         
-         if ([obj1 lowercaseString] < [obj2 lowercaseString]) {
-         return (NSComparisonResult)NSOrderedAscending;
-         }
-         
-         return (NSComparisonResult)NSOrderedSame;
-         */
     }
     return 0;
 }
